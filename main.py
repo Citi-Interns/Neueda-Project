@@ -8,7 +8,7 @@ class Mail:
         self.port = 465
         self.smtp_server_domain_name = "smtp.gmail.com"
         self.sender_mail = "neuedaproject2022@gmail.com"
-        self.password = "bazuzgyadxdxnpkc"
+        self.password = "orrnpzczppgbdnjq"
 
     def send(self, emails_receiver, subject, content):
         em = EmailMessage()
