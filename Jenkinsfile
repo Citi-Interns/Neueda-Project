@@ -4,32 +4,12 @@ def dockerImageTag = "${projectName}:${version}"
 
 pipeline {
   agent any
-
-  // stages {
-  //   stage('Test') {
-  //     steps {
-  //       sh 'chmod a+x mvnw'
-  //       sh './mvnw clean test'
-  //     }
-  //   }
-
-  //   stage('Build') {
-  //     steps {
-  //       sh './mvnw package'
-  //     }
-  //   }
-
-    stages {
+  stages {
     stage('Build Container') {
       steps {
         sh "docker build -t ${dockerImageTag} --build-arg PYTHON_MAIN_FILE=main.py ."
       }
-
-    // stage('Build Container') {
-    //   steps {
-    //     sh "docker build -t ${dockerImageTag} ."
-    //   }
-    // }
+    }
 
     stage('Deploy Container To Openshift') {
       steps {
@@ -38,7 +18,6 @@ pipeline {
         sh "oc delete all --selector app=${projectName} || echo 'Unable to delete all previous openshift resources'"
         sh "oc new-app ${dockerImageTag} -l version=${version}"
         sh "oc expose svc/${projectName}"
-        }
       }
     }
   }
