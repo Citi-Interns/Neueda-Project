@@ -1,4 +1,4 @@
-def projectName = 'Trespassing-in-Prohibited-Areas'
+def projectName = 'trespassing-in-prohibited-areas'
 def version = "0.0.${currentBuild.number}"
 def dockerImageTag = "${projectName}:${version}"
 
