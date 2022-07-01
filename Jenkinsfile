@@ -5,19 +5,19 @@ def dockerImageTag = "${projectName}:${version}"
 pipeline {
   agent any
 
-  stages {
-    stage('Test') {
-      steps {
-        sh 'chmod a+x mvnw'
-        sh './mvnw clean test'
-      }
-    }
+  // stages {
+  //   stage('Test') {
+  //     steps {
+  //       sh 'chmod a+x mvnw'
+  //       sh './mvnw clean test'
+  //     }
+  //   }
 
-    stage('Build') {
-      steps {
-        sh './mvnw package'
-      }
-    }
+  //   stage('Build') {
+  //     steps {
+  //       sh './mvnw package'
+  //     }
+  //   }
 
     stages {
     stage('Build Container') {
