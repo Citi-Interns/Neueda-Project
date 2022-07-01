@@ -19,11 +19,17 @@ pipeline {
       }
     }
 
+    stages {
     stage('Build Container') {
       steps {
-        sh "docker build -t ${dockerImageTag} ."
+        sh "docker build -t ${dockerImageTag} --build-arg PYTHON_MAIN_FILE=main.py ."
       }
-    }
+
+    // stage('Build Container') {
+    //   steps {
+    //     sh "docker build -t ${dockerImageTag} ."
+    //   }
+    // }
 
     stage('Deploy Container To Openshift') {
       steps {
