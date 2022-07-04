@@ -15,6 +15,7 @@ class Mail:
                 print(i)
                 mailer = MailSender(i,self.content)
                 mailer.send()
+                                
         except Exception as e:
             print(e)
 
