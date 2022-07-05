@@ -5,14 +5,16 @@ FROM python:3.8.5
 ARG PYTHON_MAIN_FILE
 
 # Create an /app folder inside the container.
-RUN mkdir /app
+RUN mkdir /neueda-project
 
 # Set the working directory inside the container to /app.
-WORKDIR /app
+WORKDIR /neueda-project
 # Port issues
 # Copy files from the current directory into the container's /app directory.
-COPY ./* /
-COPY ${PYTHON_MAIN_FILE} /app/main.py
+COPY routes ./routes
+COPY requirements.txt .
+#COPY app.py .
+COPY ${PYTHON_MAIN_FILE} .
 
 # Install any needed packages specified in requirements.txt.
 RUN pip install --trusted-host pypi.python.org -r requirements.txt
@@ -21,4 +23,4 @@ RUN pip install --trusted-host pypi.python.org -r requirements.txt
 EXPOSE 5000
 
 # Run main.py when the container launches.
-ENTRYPOINT ["python", "main.py"]
+ENTRYPOINT ["python3", "app.py"]
