@@ -4,7 +4,7 @@ from flask_restful import Resource, Api, reqparse
 app = Flask(__name__)
 api = Api(app)
 
-class MailingListEditor(Resource):
+class AddMails(Resource):
 
     def __init__(self):
         self.name = "niharikamadke@gmail.com"
@@ -14,6 +14,9 @@ class MailingListEditor(Resource):
             file.write("\n")
             file.write(self.name)
 
+class RemoveMails(Resource):
+    def __init__(self):
+        self.name = "niharikamadke@gmail.com"
     def delete(self):
         with open("EmailIds.txt", "r") as file:
             lines = file.readlines()
@@ -23,7 +26,8 @@ class MailingListEditor(Resource):
                 if line.strip("\n") != self.name:
                     file.write(line)
 
-api.add_resource(MailingListEditor, '/mailingListEditor')
+api.add_resource(AddMails, '/addMails')
+api.add_resource(RemoveMails, '/removeMails')
 
 
 app.run()
