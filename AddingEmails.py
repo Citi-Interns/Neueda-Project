@@ -4,11 +4,11 @@ from flask_restful import Resource, Api, reqparse
 app = Flask(__name__)
 api = Api(app)
 
+
 class AddMails(Resource):
 
     def __init__(self):
         self.name = "niharikamadke@gmail.com"
-       
     def post(self):
         with open("EmailIds.txt","a") as file:
             file.write("\n")
@@ -26,7 +26,7 @@ class RemoveMails(Resource):
                 if line.strip("\n") != self.name:
                     file.write(line)
 
-api.add_resource(AddMails, '/addMails')
+api.add_resource(AddMails(), '/addMails')
 api.add_resource(RemoveMails, '/removeMails')
 
 
