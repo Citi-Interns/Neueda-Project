@@ -23,4 +23,4 @@ RUN pip install --trusted-host pypi.python.org -r requirements.txt
 EXPOSE 5000
 
 # Run main.py when the container launches.
-ENTRYPOINT ["python3", "app.py"]
+ENTRYPOINT ["python", "app.py"]
