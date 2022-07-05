@@ -1,23 +1,18 @@
-# For more information, please refer to https://aka.ms/vscode-docker-python
-FROM python:3.8-slim
+FROM python:3.10.5
 
-# Keeps Python from generating .pyc files in the container
-ENV PYTHONDONTWRITEBYTECODE=1
+ARG PYTHON_MAIN_FILE
 
-# Turns off buffering for easier container logging
-ENV PYTHONUNBUFFERED=1
+RUN mkdir /Application
+WORKDIR /Application
 
-# Install pip requirements
-COPY requirements.txt .
-RUN python -m pip install -r requirements.txt
+COPY ./requirements.txt /Application
+COPY ${PYTHON_MAIN_FILE} /Application/app.py
 
-WORKDIR /app
-COPY . /app
+# Install any needed packages specified in requirements.txt.
+RUN pip install --trusted-host pypi.python.org -r requirements.txt
 
-# Creates a non-root user with an explicit UID and adds permission to access the /app folder
-# For more info, please refer to https://aka.ms/vscode-docker-python-configure-containers
-RUN adduser -u 5678 --disabled-password --gecos "" appuser && chown -R appuser /app
-USER appuser
+# Make port 5000 available to the world outside this container.
+EXPOSE 5000
 
-# During debugging, this entry point will be overridden. For more information, please refer to https://aka.ms/vscode-docker-python-debug
-CMD ["python", "main.py"]
+# Run app.py when the container launches.
+ENTRYPOINT ["python", "app.py"]
