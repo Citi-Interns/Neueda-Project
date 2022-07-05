@@ -16,6 +16,7 @@ COPY requirements.txt .
 #COPY app.py .
 COPY ${PYTHON_MAIN_FILE} .
 
+RUN ls -la /
 # Install any needed packages specified in requirements.txt.
 RUN pip install --trusted-host pypi.python.org -r requirements.txt
 
