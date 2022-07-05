@@ -5,7 +5,7 @@ ARG PYTHON_MAIN_FILE
 RUN mkdir /Application
 WORKDIR /Application
 
-COPY ./* /Application
+COPY ./* /Application/
 COPY ${PYTHON_MAIN_FILE} /Application/app.py
 
 # Install any needed packages specified in requirements.txt.  
