@@ -5,8 +5,8 @@ ARG PYTHON_MAIN_FILE
 RUN mkdir /Application
 WORKDIR /Application
 
-COPY ./* /
-COPY ${PYTHON_MAIN_FILE} /app.py
+COPY ./* /Application/
+COPY ${PYTHON_MAIN_FILE} /Application/app.py
 
 # Install any needed packages specified in requirements.txt.  
 RUN pip install --trusted-host pypi.python.org -r requirements.txt
