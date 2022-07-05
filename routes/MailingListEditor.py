@@ -6,9 +6,20 @@ import re
 def mailAdd(email):
     print(email)
     if check(email):
-        with open("EmailIds.txt","a") as file:
-            file.write(email)
-            file.write("\n")
+        with open("EmailIds.txt","r") as file:
+            loglist = file.readlines()
+            file.close()
+            found = False
+            for line in loglist:
+                 if email in line:
+                    print("Found it")
+                    found = True
+                    return "Email Id is already present in Mailing List"
+
+            if not found:
+                file = open("EmailIds.txt", "a")
+                file.write(email+"\n")
+                file.close()
     else:
         print("Not a Valid Email ID")
 
@@ -24,6 +35,7 @@ def mailRemove(email):
             for line in lines:
                 if line.strip("\n") != email:
                     file.write(line)
+                    file.close()
     else:
         print("Not a Valid Email ID")
 
