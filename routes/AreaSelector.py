@@ -6,12 +6,13 @@ def areaReceiver(area):
     if area == "1":
         content = "Trespassing has been detected in the backyard"
         mailingList('EmailIds.txt', content)
+        return "Mail Sent for tresspassing in backyard"
     elif area == "2":
         content = "Trespassing has been detected in the portico"
         mailingList('EmailIds.txt', content)
+        return "Mail Sent for tresspassing in portico"
     else:
         return "No tresspassing detected"
-    return "Mail Sent for tresspassing"
 
 
 def mailingList(file_path,content):
