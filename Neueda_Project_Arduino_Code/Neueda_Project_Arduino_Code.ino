@@ -1,9 +1,10 @@
 #include <WiFi.h>
-
+#include <HTTPClient.h>
 // Replace with your network credentials
 const char* ssid = "Baap ko bolo recharge krwae";
 const char* password = "madarchod1";
-
+const char *host = "http://trespassing-in-prohibited-areas-trespassing-in-prohibited-areas.linuxops-pune-b6.conygre.com";
+HTTPClient http;
 // Set web server port number to 80
 WiFiServer server(80);
 
@@ -11,8 +12,8 @@ WiFiServer server(80);
 String header;
 
 // Auxiliar variables to store the current output state
-String output26State = "off";
-String output27State = "off";
+String output26State = "undetected";
+String output27State = "undetected";
 
 // Assign output variables to GPIO pins
 const int output26 = 26;
@@ -52,7 +53,8 @@ void setup() {
 
 void loop(){
   WiFiClient client = server.available();   // Listen for incoming clients
-
+  
+  
   if (client) {                             // If a new client connects,
     currentTime = millis();
     previousTime = currentTime;
@@ -76,21 +78,28 @@ void loop(){
             client.println();
             
             // turns the GPIOs on and off
-            if (header.indexOf("GET /26/on") >= 0) {
-              Serial.println("GPIO 26 on");
-              output26State = "on";
+            if (header.indexOf("GET /26/detected") >= 0) {
+              Serial.println("GPIO 26 detected");
+              output26State = "detected";
+              String postData = "/trespass/1";
+              http.begin(host);
+              int httpCode = http.POST(postData);   //Send the request
+              String payload = http.getString();    //Get the response payload
+              Serial.println(httpCode);   //Print HTTP return code
+              Serial.println(payload);    //Print request response payload
+              http.end();  //Close connection
               digitalWrite(output26, HIGH);
-            } else if (header.indexOf("GET /26/off") >= 0) {
-              Serial.println("GPIO 26 off");
-              output26State = "off";
+            } else if (header.indexOf("GET /26/undetected") >= 0) {
+              Serial.println("GPIO 26 undetected");
+              output26State = "undetected";
               digitalWrite(output26, LOW);
-            } else if (header.indexOf("GET /27/on") >= 0) {
-              Serial.println("GPIO 27 on");
-              output27State = "on";
+            } else if (header.indexOf("GET /27/detected") >= 0) {
+              Serial.println("GPIO 27 detected");
+              output27State = "detected";
               digitalWrite(output27, HIGH);
-            } else if (header.indexOf("GET /27/off") >= 0) {
-              Serial.println("GPIO 27 off");
-              output27State = "off";
+            } else if (header.indexOf("GET /27/undetected") >= 0) {
+              Serial.println("GPIO 27 undetected");
+              output27State = "undetected";
               digitalWrite(output27, LOW);
             }
             
@@ -109,21 +118,21 @@ void loop(){
             client.println("<body><h1>Trespassing in Prohibited Area Dashboard</h1>");
             
             // Display current state, and ON/OFF buttons for GPIO 26  
-            client.println("<p>Backyard Sensor - State " + output26State + "</p>");
+            client.println("<p>Backyard Sensor - Current State is " + output26State + "</p>");
             // If the output26State is off, it displays the ON button       
-            if (output26State=="off") {
-              client.println("<p><a href=\"/26/on\"><button class=\"button\">ON</button></a></p>");
+            if (output26State=="undetected") {
+              client.println("<p><a href=\"/26/detected\"><button class=\"button\">DETECTED</button></a></p>");
             } else {
-              client.println("<p><a href=\"/26/off\"><button class=\"button button2\">OFF</button></a></p>");
+              client.println("<p><a href=\"/26/undetected\"><button class=\"button button2\">UNDETECTED</button></a></p>");
             } 
                
             // Display current state, and ON/OFF buttons for GPIO 27  
-            client.println("<p>Portico Sensor - State " + output27State + "</p>");
+            client.println("<p>Portico Sensor - Current State is " + output27State + "</p>");
             // If the output27State is off, it displays the ON button       
-            if (output27State=="off") {
-              client.println("<p><a href=\"/27/on\"><button class=\"button\">ON</button></a></p>");
+            if (output27State=="undetected") {
+              client.println("<p><a href=\"/27/detected\"><button class=\"button\">DETECTED</button></a></p>");
             } else {
-              client.println("<p><a href=\"/27/off\"><button class=\"button button2\">OFF</button></a></p>");
+              client.println("<p><a href=\"/27/undetected\"><button class=\"button button2\">UNDETECTED</button></a></p>");
             }
             client.println("</body></html>");
             
